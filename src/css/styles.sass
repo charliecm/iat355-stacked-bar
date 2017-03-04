@@ -1,0 +1,108 @@
+/**
+ * Stylesheet
+ */
+
+@import 'settings'
+@import 'functions'
+@import 'reset'
+
+*, *:before, *:after
+    box-sizing: border-box
+
+html
+	height: 100%
+	font-size: 100%
+
+body
+	margin: 0
+	height: 100%
+	background-color: white
+	font-family: $font-primary
+	font-size: 1rem
+	line-height: 1
+	color: $color-text
+	background-color: $color-bg
+
+a
+	font-weight: bold
+	text-decoration: none
+	color: $color-text
+
+.wrap
+	margin: 0 auto
+	padding-left: $wrap-padding
+	padding-right: $wrap-padding
+	max-width: rem($body-width-max)
+	width: 100%
+
+.title
+	margin-top: rem(64px)
+	font-size: rem(32px)
+	font-weight: bold
+	text-align: center
+
+.main
+	overflow: hidden
+	margin: rem(24px) auto rem(64px) auto
+	display: flex
+	flex-direction: column
+	+bp-gt($bp-small)
+		padding: 0 rem($wrap-padding)
+		flex-direction: row
+
+.canvas
+	min-width: rem($canvas-width-min)
+
+.canvas-wrap
+	overflow-x: auto
+	overflow-y: hidden
+	padding-bottom: rem(12px)
+	width: 100%
+	+bp-gt($bp-small)
+		margin-left: 0
+		margin-right: 0
+		padding-bottom: 0
+
+.legends
+	display: flex
+	justify-content: center
+	flex-direction: column
+	margin: 0 auto
+	padding-top: rem(24px)
+	width: rem($legends-width)
+	+bp-gt($bp-small)
+		padding-top: 0
+		padding-left: rem(24px)
+
+.legends__title
+	margin-bottom: rem(8px)
+	font-weight: bold
+	text-transform: uppercase
+
+.legends__list
+	margin-left: rem(-6px)
+	margin-right: rem(-6px)
+
+.legends__item
+	display: flex
+	padding: rem(4px) rem(6px)
+	cursor: pointer
+	&:hover
+		background-color: $color-legends-hover
+
+.legends__color
+	flex-shrink: 0
+	margin-right: rem(6px)
+	width: rem(32px)
+	height: rem(20px)
+	vertical-align: top
+	background-color: red
+
+.legends__label
+	display: block
+	align-self: center
+
+.footer
+	margin-bottom: rem(96px)
+	font-size: rem(14px)
+	text-align: center
