@@ -94,20 +94,20 @@ a {
   margin: 1.5rem auto 4rem auto;
   display: flex;
   flex-direction: column; }
-  @media only screen and (min-width: 796px) {
+  @media only screen and (min-width: 481px) {
     .main {
       padding: 0 1rem;
       flex-direction: row; } }
 
 .canvas {
-  min-width: 30rem; }
+  min-width: 17.5rem; }
 
 .canvas-wrap {
   overflow-x: auto;
   overflow-y: hidden;
   padding-bottom: 0.75rem;
   width: 100%; }
-  @media only screen and (min-width: 796px) {
+  @media only screen and (min-width: 481px) {
     .canvas-wrap {
       margin-left: 0;
       margin-right: 0;
@@ -120,7 +120,7 @@ a {
   margin: 0 auto;
   padding-top: 1.5rem;
   width: 12.5rem; }
-  @media only screen and (min-width: 796px) {
+  @media only screen and (min-width: 481px) {
     .legends {
       padding-top: 0;
       padding-left: 1.5rem; } }
