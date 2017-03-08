@@ -91,23 +91,27 @@ a {
 
 .main {
   overflow: hidden;
-  margin: 1.5rem auto 4rem auto;
+  margin: 1.5rem auto 3rem auto;
   display: flex;
   flex-direction: column; }
-  @media only screen and (min-width: 481px) {
+  @media only screen and (min-width: 561px) {
     .main {
       padding: 0 1rem;
       flex-direction: row; } }
 
 .canvas {
-  min-width: 17.5rem; }
+  min-width: 17.5rem;
+  height: 26.25rem; }
+  @media only screen and (min-width: 721px) {
+    .canvas {
+      height: 30rem; } }
 
 .canvas-wrap {
   overflow-x: auto;
   overflow-y: hidden;
   padding-bottom: 0.75rem;
   width: 100%; }
-  @media only screen and (min-width: 481px) {
+  @media only screen and (min-width: 561px) {
     .canvas-wrap {
       margin-left: 0;
       margin-right: 0;
@@ -117,16 +121,17 @@ a {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  margin: 0 auto;
-  padding-top: 1.5rem;
-  width: 12.5rem; }
-  @media only screen and (min-width: 481px) {
+  margin-left: 5rem;
+  width: 12.5rem;
+  font-size: 0.875rem; }
+  @media only screen and (min-width: 561px) {
     .legends {
+      margin: 0 auto;
       padding-top: 0;
       padding-left: 1.5rem; } }
 
 .legends__title {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
   font-weight: bold;
   text-transform: uppercase; }
 
@@ -154,6 +159,18 @@ a {
   align-self: center; }
 
 .footer {
-  margin-bottom: 6rem;
+  margin-bottom: 4.5rem;
   font-size: 0.875rem;
   text-align: center; }
+
+.chart text {
+  font-size: 0.625rem; }
+  @media only screen and (min-width: 721px) {
+    .chart text {
+      font-size: 0.75rem; } }
+
+.chart__value {
+  fill: white; }
+
+.chart__x-axis .tick line {
+  display: none; }

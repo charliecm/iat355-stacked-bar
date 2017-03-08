@@ -18,15 +18,15 @@ document.addEventListener('DOMContentLoaded', function() {
 		labels = d3.scaleOrdinal([
 			'Cars', 'Bikes', 'Truckers'
 		]),
-		colors = d3.scaleOrdinal([
-			'#ccff00', '#c00ff3', '#00cf33'
-		]),
-		dataMax = 0;
+		colors = d3.scaleOrdinal(d3.schemeCategory10),
+		yMax = 0,
+		stack = d3.stack().keys(dimensions),
+		series;
 
 	// UI
 	var canvas = document.getElementById('canvas'),
 		svg = d3.select(canvas).append('svg'),
-		gWrap, gXAxis, gYAxis, gBars,
+		gWrap, gXAxis, gAxisLabels, gYAxis, gBars,
 		margin = {
 			top: 40,
 			bottom: 40,
@@ -89,41 +89,45 @@ document.addEventListener('DOMContentLoaded', function() {
 		});
 	}
 
-	// Setup diagram canvas
-	function setupDiagram() {
+	// Setup visualization canvas
+	function setupVis() {
 		gWrap = svg.append('g')
 			.attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')');
 		gBars = gWrap.append('g');
 		gXAxis = gWrap.append('g');
 		gXAxis.append('line');
+		gAxisLabels = gXAxis.append('g');
 		gYAxis = gWrap.append('g');
 	}
 
-	// Draws the diagram
+	// Draws the visualization
 	function redraw() {
+
 		var outerWidth = canvas.clientWidth,
-			outerHeight = 360,
+			outerHeight = canvas.clientHeight,
 			width = outerWidth - margin.left - margin.right,
 			height = outerHeight - margin.top - margin.bottom;
-		xScale = d3.scaleBand().rangeRound([ 0, width ]).padding(0.1);
+
+		// Calculate scales
+		xScale = d3.scaleBand().rangeRound([ 0, width ]).padding(0.05);
 		xAxis = d3.axisBottom().scale(xScale);
 		yScale = d3.scaleLinear().range([ height / 2, 0]);
 		yAxisScale = d3.scaleLinear().range([ height, 0 ]);
 		yAxis = d3.axisLeft().scale(yAxisScale);
-		// heightScale = d3.scale.linear().range([ 0, height / 2]);
 		xScale.domain(data.map(function(d) {
 			return d.month;
 		}));
-		yScale.domain([ 0, dataMax ]);
-		yAxisScale.domain([ -dataMax, dataMax ]);
-		var stack = d3.stack().keys([ 'carSales', 'bikeSales', 'truckSales' ]);
-		var series = stack(data);
-		// Resize
+		yScale.domain([ 0, yMax ]);
+		yAxisScale.domain([ -yMax, yMax ]);
+
+		// Resize canvas
 		svg.attrs({
+			class: 'chart',
 			width: outerWidth,
 			height: outerHeight
 		});
-		// x-axis
+
+		// x-axis line
 		gXAxis.select('line')
 			.attrs({
 				x1: 0,
@@ -132,10 +136,21 @@ document.addEventListener('DOMContentLoaded', function() {
 				y2: height / 2 + 0.5,
 				stroke: 'black'
 			});
-		// gXAxis.attr('transform', 'translate(0, ' + height / 2 + ')')
-		// 	.call(d3.axisBottom(dataX));
+
+		// x-axis labels
+		gAxisLabels
+			.attr('class', 'chart__x-axis')
+			.attr('transform', 'translate(0, ' + height / 2 + ')')
+			.call(xAxis);
+
+		// gXAxis.selectAll('text')
+		// 	.transition().duration(1000)
+		// 	.attr('transform', 'translate(0,' + d3.max(offsets[offset]) + ')');
+
+		// y-axis
 		gYAxis.call(yAxis.ticks(10, '.2s'));
 
+		// Populate series
 		var gSeries = gBars.selectAll('.series').data(series);
 		gSeries.exit().remove();
 		gSeries = gSeries.enter()
@@ -146,27 +161,52 @@ document.addEventListener('DOMContentLoaded', function() {
 			})
 			.merge(gSeries);
 
-		var gSeriesBars = gSeries.selectAll('rect')
+		// Populate bars for each series
+		var gSeriesBars = gSeries.selectAll('g')
 			.data(function(d) {
 				return d;
 			});
 		gSeriesBars.exit().remove();
 		gSeriesBars
 			.enter()
-				.append('rect')
-			.merge(gSeriesBars)
-				.attrs({
-					x: function(d) {
-						return xScale(d.data.month);
-					},
-					y: function(d) {
-						return yScale(d[1]);
-					},
-					width: xScale.bandwidth(),
-					height: function(d) {
-						return yScale(d[0]) - yScale(d[1]);
-					}
+				.append('g')
+				.each(function() {
+					d3.select(this).append('rect');
+					d3.select(this).append('text');
 				});
+		gSeriesBars = gSeries.selectAll('g');
+
+		gSeriesBars.selectAll('rect')
+			.attrs({
+				x: function(d) {
+					return xScale(d.data.month);
+				},
+				y: function(d) {
+					return yScale(d[1]);
+				},
+				width: xScale.bandwidth(),
+				height: function(d) {
+					return yScale(d[0]) - yScale(d[1]);
+				}
+			});
+
+		gSeriesBars.selectAll('text')
+			.attrs({
+				class: 'chart__value',
+				dx: function(d) {
+					return xScale(d.data.month) + xScale.bandwidth() / 2;
+				},
+				dy: function(d) {
+					return yScale(d[1]) + 2;
+				},
+				width: xScale.bandwidth(),
+				'text-anchor': 'middle',
+				'alignment-baseline': 'text-before-edge'
+			})
+			.text(function(d) {
+				return d3.format('.2s')(d[1]);
+			});
+
 	}
 
 	// Fetches and parses the data
@@ -176,19 +216,20 @@ document.addEventListener('DOMContentLoaded', function() {
 				var carSales = +d['Car Sales'],
 					bikeSales = +d['Bike Sales'],
 					truckSales = +d['Truck Sales'];
-				dataMax = Math.max(dataMax, Math.max(carSales + bikeSales + truckSales));
+				yMax = Math.max(yMax, Math.max(carSales + bikeSales + truckSales));
 				return {
-					month: d['Month'],
+					month: d['Month'].substr(0, 3),
 					carSales: carSales,
 					bikeSales: bikeSales,
 					truckSales: truckSales
 				};
 			})
 			.get(function(d) {
-				// Initialize diagram
+				// Initialize visualization
 				data = d;
+				series = stack(data);
 				setupLegends();
-				setupDiagram();
+				setupVis();
 				redraw();
 				window.addEventListener('resize', debounce(redraw, 500));
 			});

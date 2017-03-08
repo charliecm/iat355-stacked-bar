@@ -43,7 +43,7 @@ a
 
 .main
 	overflow: hidden
-	margin: rem(24px) auto rem(64px) auto
+	margin: rem(24px) auto rem(48px) auto
 	display: flex
 	flex-direction: column
 	+bp-gt($bp-small)
@@ -52,6 +52,9 @@ a
 
 .canvas
 	min-width: rem($canvas-width-min)
+	height: rem(420px)
+	+bp-gt($bp-large)
+		height: rem(480px)
 
 .canvas-wrap
 	overflow-x: auto
@@ -67,15 +70,16 @@ a
 	display: flex
 	justify-content: center
 	flex-direction: column
-	margin: 0 auto
-	padding-top: rem(24px)
+	margin-left: rem(80px)
 	width: rem($legends-width)
+	font-size: rem(14px)
 	+bp-gt($bp-small)
+		margin: 0 auto
 		padding-top: 0
 		padding-left: rem(24px)
 
 .legends__title
-	margin-bottom: rem(8px)
+	margin-bottom: rem(4px)
 	font-weight: bold
 	text-transform: uppercase
 
@@ -103,6 +107,21 @@ a
 	align-self: center
 
 .footer
-	margin-bottom: rem(96px)
+	margin-bottom: rem(72px)
 	font-size: rem(14px)
 	text-align: center
+
+// ----------------------------------------------------------------------------
+// Chart
+// ----------------------------------------------------------------------------
+
+.chart text
+	font-size: rem(10px)
+	+bp-gt($bp-large)
+		font-size: rem(12px)
+
+.chart__value
+	fill: white
+
+.chart__x-axis .tick line
+	display: none
