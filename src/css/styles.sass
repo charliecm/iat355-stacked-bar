@@ -117,11 +117,17 @@ a
 
 .chart text
 	font-size: rem(10px)
+	pointer-events: none
 	+bp-gt($bp-large)
 		font-size: rem(12px)
 
 .chart__value
 	fill: white
 
-.chart__x-axis .tick line
+.chart__x-axis .tick line,
+.chart__x-axis .domain
 	display: none
+
+.chart__bar:hover
+	stroke: rgba(255, 255, 255, 0.5)
+	stroke-width: 4
