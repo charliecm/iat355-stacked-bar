@@ -164,7 +164,8 @@ a {
   text-align: center; }
 
 .chart text {
-  font-size: 0.625rem; }
+  font-size: 0.625rem;
+  pointer-events: none; }
   @media only screen and (min-width: 721px) {
     .chart text {
       font-size: 0.75rem; } }
@@ -172,5 +173,10 @@ a {
 .chart__value {
   fill: white; }
 
-.chart__x-axis .tick line {
+.chart__x-axis .tick line,
+.chart__x-axis .domain {
   display: none; }
+
+.chart__bar:hover {
+  stroke: rgba(255, 255, 255, 0.5);
+  stroke-width: 4; }
