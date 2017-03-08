@@ -123,7 +123,7 @@ a {
   flex-direction: column;
   margin-left: 5rem;
   width: 12.5rem;
-  font-size: 0.875rem; }
+  font-size: 0.75rem; }
   @media only screen and (min-width: 561px) {
     .legends {
       margin: 0 auto;
@@ -178,5 +178,4 @@ a {
   display: none; }
 
 .chart__bar:hover {
-  stroke: rgba(255, 255, 255, 0.5);
-  stroke-width: 4; }
+  opacity: 0.8; }
